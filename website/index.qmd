@@ -1,5 +1,23 @@
 ---
 title: "Lo-Yu Chang"
+format: html
 ---
 
-Hi, I am Lo-Yu Chang, a 4th year PhD student in Biochemistry, Cellular and Molecular Biology (BCMB) and concurrent MHS student in Biostatistics at the Johns Hopkins University. My thesis advisors are [Dr. Luisa Cochella](https://mbg.jhmi.edu/people/luisa-cochella-ph-d/) (PhD) and [Dr. Hongkai Ji](https://publichealth.jhu.edu/faculty/1943/hongkai-ji) (MHS).
+Hello, I am Lo-Yu Chang, a Biochemistry, Cellular and Molecular Biology (BCMB) PhD student and concurrent Biostatistics MHS student at the Johns Hopkins University.
+
+![](images/loyu_chang.jpg){width=200px fig-align="center"}
+
+<div style="display: flex; gap: 100px; justify-content: center; align-items: center;">
+  <a href="https://github.com/loyuchang">
+    <img src="/images/github-mark.svg" alt="Github" width="30" height="30" />
+  </a>
+  <a href="https://www.linkedin.com/in/loyuchang/">
+    <img src="/images/LinkedIn_icon.svg" alt="LinkedIn" width="30" height="30" />
+  </a>
+  <a href="https://orcid.org/0000-0002-6499-939X">
+    <img src="/images/ORCID_iD.svg" alt="ORCID" width="30" height="30" />
+  </a>
+  <a href="https://scholar.google.com/citations?user=trNNCnkAAAAJ&hl=en&oi=ao">
+    <img src="/images/Google_Scholar_logo.svg" alt="Google Scholar" width="30" height="30" />
+  </a>
+</div>

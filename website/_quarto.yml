@@ -2,12 +2,13 @@ project:
   type: website
 
 website:
-  title: "website"
+  title: "Lo-Yu Chang"
   navbar:
     left:
       - href: index.qmd
         text: Home
       - about.qmd
+      - analysis.qmd
 
 format:
   html:

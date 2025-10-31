@@ -1,5 +1,25 @@
 ---
 title: "About"
+format: html
 ---
 
-Outside of lab, I enjoy railfanning, attending my aquarium and plants, and astronomy. ***fun fact:*** JHU in homewood has a [telescope](https://md.spacegrant.org/observatory-open-house/) that is open to public on certain Fridays, and you can get train to use it as well! 
+## Education
+
+-   PhD candidate \| Biochemistry, Cellular and Molecular Biology (BCMB) \| Johns Hopkins University \| 2022 - Present
+    -   Advisor: [Dr. Luisa Cochella](https://mbg.jhmi.edu/people/luisa-cochella-ph-d/)
+-   MHS candidate \| Biostatistics \| Johns Hopkins Bloomberg School of Public Health \| 2023 - Present
+    -   Advisor: [Dr. Hongkai Ji](https://publichealth.jhu.edu/faculty/1943/hongkai-ji)
+-   MD \| National Taiwan University \| 2014 - 2022
+-   BS \| National Taiwan University \| 2014 - 2022
+    -   Major: Geosciences; Minor: Anthopology
+
+## Experience
+
+-   Johns Hopkins University \| Graduate Research Assistant \| 2022 - Present
+-   Undergraduate Research Assistant \| National Taiwan University \| 2016-2022
+
+## Fun
+
+Outside of lab, I enjoy railfanning, attending my aquarium and plants, and astronomy.
+
+***Fun fact:*** JHU has a [telescope](https://md.spacegrant.org/observatory-open-house/) that is open to public on certain Fridays, and you can get trained to use it as well!
