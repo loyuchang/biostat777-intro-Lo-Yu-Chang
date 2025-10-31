@@ -3,3 +3,111 @@ title: "Example analysis"
 format: html
 ---
 
+Here is an example analysis using R code.
+
+As education is commonly linked to income, we will analyze the relationship between these two variables using the [USDA Economic Research Service's 2023 County-level Data Sets](https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data). The data dictionary for the datasets can be found [here](https://www.ers.usda.gov/data-products/county-level-data-sets/documentation). In summary, the education dataset contains information on educational attainment levels for individuals aged 25 and older, while the unemployment dataset contains information on unemployment rates.
+
+|  |  |
+|------------------------------------|------------------------------------|
+| FIPS Code | Federal Information Processing Standard) code is a unique numeric identifier for geographic areas in the United States, ranging from states to counties and even smaller units like census blocks |
+| State | Name of the state |
+| Area name | Name of the area, could be state or county. In the structure of "County, stateID" |
+| Attribute | Information for the education level and the year of survey was taken |
+| Value | Number of person with in this attribute |
+
+|  |  |
+|------------------------------------|------------------------------------|
+| FIPS_Code | Federal Information Processing Standard) code is a unique numeric identifier for geographic areas in the United States, ranging from states to counties and even smaller units like census blocks |
+| State | Name of the state |
+| Area_Name | Name of the area, could be state or county. In the structure of "County, stateID" |
+| Attribute | Information for the emplyoment and median household income, and the year of survey was taken |
+| Value | Number of the attribute |
+
+First load the required packages:
+```{r}
+library(tidyverse)
+library(here)
+library(sessioninfo)
+```
+
+Next, we need to download the datasets from the USDA website to the working directory, under /data. In order to not repeat the download step, I put in the code to check if the file already exists, and only download if it does not. It the file is already there, it will skip the download step and just read in the existing file.
+```{r}
+if (!file.exists("data/Education2023.csv")) {
+  download.file("https://ers.usda.gov/sites/default/files/_laserfiche/DataFiles/48747/Education2023.csv?v=78660", 
+                destfile = "data/Education2023.csv")
+}
+if (!file.exists("data/Unemployment2023.csv")) {
+  download.file("https://ers.usda.gov/sites/default/files/_laserfiche/DataFiles/48747/Unemployment2023.csv?v=44357", 
+                destfile = "data/Unemployment2023.csv")
+}
+```
+
+Then read in the datasets:
+```{r}
+education_data <- read_csv(here("data/Education2023.csv"))
+unemployment_data <- read_csv(here("data/Unemployment2023.csv"))
+```
+
+We can take a look at the first few rows of each dataset to understand their structure:
+```{r}
+head(education_data)
+head(unemployment_data)
+```
+
+The data is already tidy in the long-format, but since I am interested in combining the education information with employment data, I will need to merge them together using the common column "FIPS", which represents the unique identifier for each geological area.
+```{r}
+# Merge datasets by "FIPS_Code" and "FIPS Code", and exclude the redundant columns
+merged_data <- education_data %>%
+  inner_join(unemployment_data %>% select(-State, -Area_Name), by = c("FIPS Code" = "FIPS_Code"), suffix = c("_edu", "_unemp"))
+```
+
+For this analysis, I will focus on the data from Maryland. 
+```{r}
+MD.data <- merged_data %>%
+  filter(State == "MD")
+```
+
+First we can plot relationship between the percentage of individuals with a bachelor's degree or higher and the median household income in Maryland counties, and focusing on the education data from 2019-2023 and the unemployment data from 2022.
+
+```{r}
+# clean up the names, removing the "county" suffix for better readability, also seperate the year from the attribute name, both for education and unemployment data
+# Attribute_edu will be "attribute, year", Attribute_unemp will be "attribute_year", and I want to slice off the year part for both to put in separate columns "year_edu" and "year_unemp"
+MD.data <- MD.data %>%
+  mutate(`Area name` = str_replace(`Area name`, " County", ""),
+         year_edu = str_extract(Attribute_edu, "\\d{4}"),
+         year_unemp = str_extract(Attribute_unemp, "\\d{4}"),
+         Attribute_edu = str_remove(Attribute_edu, ", \\d{4}"),
+         Attribute_unemp = str_remove(Attribute_unemp, "_\\d{4}"))
+
+```
+
+First we visual the change in education level over the years in Maryland counties, focusing on the percentage of adults with a bachelor's degree or higher from 1990 to 2000, faceted by county
+```{r}
+# extract only the percent attribute for education
+MD.edu <- MD.data %>%
+  filter(Attribute_edu %in% 'Percent')
+
+
+```
+
+```{r}
+MD.data <- merged_data %>%
+  filter(State == "MD",
+         Attribute_edu == "Percent of adults with a bachelor's degree or higher, 2019-23",
+         Attribute_unemp == "Median_Household_Income_2022") %>%
+  select(FIPS = `FIPS Code`, `Area name`, Education = Value_edu, Median_Income = Value_unemp)
+```
+
+Now we can create a scatter plot to visualize the relationship between education level and median household income in Maryland counties, also include a linear regression line to see the trend. 
+```{r}
+# also label the indivual points with county names, excluding the "county" suffix for better readability, also adjust the text position to avoid overlap with points, also adding connecting line
+ggplot(MD.data, aes(x = Education, y = Median_Income)) +
+  geom_point() +
+  geom_text(aes(label = str_replace(`Area name`, " County", "")), 
+            vjust = -0.5, hjust = 0.5, size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(title = "Relationship between Education Level and Median Household Income in Maryland Counties",
+       x = "Percentage of Adults with Bachelor's Degree or Higher",
+       y = "Median Household Income (2022)") +
+  theme_minimal()
+```
