@@ -83,31 +83,77 @@ MD.data <- MD.data %>%
 
 First we visual the change in education level over the years in Maryland counties, focusing on the percentage of adults with a bachelor's degree or higher from 1990 to 2000, faceted by county
 ```{r}
-# extract only the percent attribute for education
+# extract only the education attribute with "Percent" in it
 MD.edu <- MD.data %>%
-  filter(Attribute_edu %in% 'Percent')
-
-
+  filter(str_detect(Attribute_edu , "Percent"))
 ```
 
 ```{r}
-MD.data <- merged_data %>%
+# check all the unique attributes in the education data
+unique(MD.edu$Attribute_edu)
+# there are multiple education levels mean the same thing but with different labels, so I need to collapse them
+MD.edu.de <- MD.edu %>%
+  mutate(Attribute_edu = case_when(
+    Attribute_edu %in% c("Percent of adults with less than a high school diploma", 
+                         "Percent of adults who are not high school graduates",
+                         "Percent of adults who are not high school graduates-12",
+                         "Percent of adults who are not high school graduates-23") ~ "Less than high school",
+    Attribute_edu %in% c("Percent of adults with a high school diploma only", 
+                         "Percent of adults who are high school graduates (or equivalent)",
+                         "Percent of adults who are high school graduates (or equivalent)-12",
+                         "Percent of adults who are high school graduates (or equivalent)-23"
+                         ) ~ "High school",
+    Attribute_edu %in% c("Percent of adults completing some college (1-3 years)",
+    "Percent of adults completing some college or associate degree",
+    "Percent of adults completing some college or associate degree-12",
+    "Percent of adults completing some college or associate degree-23") ~ "Some college or associate degree",
+    Attribute_edu %in% c("Percent of adults completing four years of college or higher",
+    "Percent of adults with a bachelor's degree or higher",
+                         "Percent of adults with a bachelor's degree or higher-12",
+                         "Percent of adults with a bachelor's degree or higher-23") ~ "Bachelor or Higher",
+    TRUE ~ Attribute_edu
+  ))
+```
+
+```{r}
+# I want to plot the change in education level over the years in Maryland counties, using stacking bar chart for individual levels, faceted by county
+ggplot(MD.edu.de, aes(x = year_edu, y = Value_edu, fill = Attribute_edu)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ `Area name`) +
+  labs(title = "Education Level Distribution in Maryland Counties (1990-2023)",
+       x = "Year",
+       y = "Percentage of Adults",
+       fill = "Education Level") +
+  theme_minimal()
+
+```
+
+Overall, we can see a trend of increasing education levels in Maryland counties over the years, with more adults attaining higher education degrees.
+
+Now we can focus on the income data, specifically the median household income in Maryland counties in 2022, and see how it relates to education level.
+
+```{r}
+MD.income.edu <- MD.edu.de %>%
   filter(State == "MD",
-         Attribute_edu == "Percent of adults with a bachelor's degree or higher, 2019-23",
-         Attribute_unemp == "Median_Household_Income_2022") %>%
-  select(FIPS = `FIPS Code`, `Area name`, Education = Value_edu, Median_Income = Value_unemp)
+         Attribute_edu == "Bachelor or Higher",
+         Attribute_unemp == "Median_Household_Income",
+         year_edu == "2019",
+         year_unemp == "2022") %>%
+  select(`Area name`, Education = Value_edu, Median_Income = Value_unemp)
 ```
 
 Now we can create a scatter plot to visualize the relationship between education level and median household income in Maryland counties, also include a linear regression line to see the trend. 
 ```{r}
 # also label the indivual points with county names, excluding the "county" suffix for better readability, also adjust the text position to avoid overlap with points, also adding connecting line
-ggplot(MD.data, aes(x = Education, y = Median_Income)) +
+ggplot(MD.income.edu, aes(x = Education, y = Median_Income)) +
   geom_point() +
-  geom_text(aes(label = str_replace(`Area name`, " County", "")), 
-            vjust = -0.5, hjust = 0.5, size = 3) +
+  geom_text(aes(label = `Area name`), vjust = -0.5, hjust = 0.5, size = 3) +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
   labs(title = "Relationship between Education Level and Median Household Income in Maryland Counties",
        x = "Percentage of Adults with Bachelor's Degree or Higher",
        y = "Median Household Income (2022)") +
   theme_minimal()
+# fit a linear model to see the correlation coefficient
+model <- lm(Median_Income ~ Education, data = MD.income.edu)
+summary(model)
 ```
