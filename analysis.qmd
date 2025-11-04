@@ -153,7 +153,20 @@ ggplot(MD.income.edu, aes(x = Education, y = Median_Income)) +
        x = "Percentage of Adults with Bachelor's Degree or Higher",
        y = "Median Household Income (2022)") +
   theme_minimal()
+```
+
+```{r}
 # fit a linear model to see the correlation coefficient
 model <- lm(Median_Income ~ Education, data = MD.income.edu)
 summary(model)
+```
+
+## Summary for used functions for TA grading
+`dplyr`
+`tidyr`
+`ggplot2`
+
+## Session Info
+```{r}
+session_info()
 ```
