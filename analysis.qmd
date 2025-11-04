@@ -163,8 +163,23 @@ summary(model)
 
 ## Summary for used functions for TA grading
 `dplyr`
+- `filter()`
+- `mutate()`
+- `select()`
+- `inner_join()`
+- `case_when()`
+- `group_by()`
+
 `tidyr`
+- `separate()`
+
 `ggplot2`
+- `geom_point()`
+- `geom_text()`
+- `geom_smooth()`
+- `geom_bar()`
+- `facet_wrap()`
+- `labs()`
 
 ## Session Info
 ```{r}
