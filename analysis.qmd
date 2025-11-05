@@ -1,6 +1,7 @@
 ---
 title: "Example analysis"
 format: html
+bibliography: references.bib
 ---
 
 Here is an example analysis using R code.
@@ -17,11 +18,16 @@ As education is commonly linked to income, we will analyze the relationship betw
 
 |  |  |
 |------------------------------------|------------------------------------|
-| FIPS_Code | Federal Information Processing Standard) code is a unique numeric identifier for geographic areas in the United States, ranging from states to counties and even smaller units like census blocks |
+| FIPS_Code | Federal Information Processing Standard code is a unique numeric identifier for geographic areas in the United States, ranging from states to counties and even smaller units like census blocks |
 | State | Name of the state |
 | Area_Name | Name of the area, could be state or county. In the structure of "County, stateID" |
 | Attribute | Information for the emplyoment and median household income, and the year of survey was taken |
 | Value | Number of the attribute |
+
+::: {.callout-caution}
+## Always double-check the name of the columns when merging datasets!
+For example, in the education dataset, the FIPS code column is named "FIPS Code", while in the unemployment dataset, it is named "FIPS_Code". This difference in naming conventions can lead to errors when merging datasets if not properly addressed. I will proceed to clean up this later in the analysis.
+:::
 
 First load the required packages:
 ```{r}
@@ -31,6 +37,7 @@ library(sessioninfo)
 ```
 
 Next, we need to download the datasets from the USDA website to the working directory, under /data. In order to not repeat the download step, I put in the code to check if the file already exists, and only download if it does not. It the file is already there, it will skip the download step and just read in the existing file.
+
 ```{r}
 if (!file.exists("data/Education2023.csv")) {
   download.file("https://ers.usda.gov/sites/default/files/_laserfiche/DataFiles/48747/Education2023.csv?v=78660", 
@@ -42,24 +49,36 @@ if (!file.exists("data/Unemployment2023.csv")) {
 }
 ```
 
+::: {.callout-note}
+## Note on data download
+To maintain proper equitte, I try to not re-download the data files if they already exist in the working directory. This helps to avoid unnecessary downloads and pose unneeded load on the data server.
+:::
+
 Then read in the datasets:
 ```{r}
 education_data <- read_csv(here("data/Education2023.csv"))
 unemployment_data <- read_csv(here("data/Unemployment2023.csv"))
 ```
 
-We can take a look at the first few rows of each dataset to understand their structure:
+We can take a look at the first few rows of each dataset to understand their structure
+
 ```{r}
 head(education_data)
 head(unemployment_data)
 ```
 
 The data is already tidy in the long-format, but since I am interested in combining the education information with employment data, I will need to merge them together using the common column "FIPS", which represents the unique identifier for each geological area.
+
 ```{r}
 # Merge datasets by "FIPS_Code" and "FIPS Code", and exclude the redundant columns
 merged_data <- education_data %>%
   inner_join(unemployment_data %>% select(-State, -Area_Name), by = c("FIPS Code" = "FIPS_Code"), suffix = c("_edu", "_unemp"))
 ```
+
+::: {.callout-note}
+## Note on merging datasets
+As mentioned earlier, the FIPS code column names are different in the two datasets, so I need to specify the column names when merging the datasets using `inner_join()`.
+:::
 
 For this analysis, I will focus on the data from Maryland. 
 ```{r}
@@ -81,7 +100,8 @@ MD.data <- MD.data %>%
 
 ```
 
-First we visual the change in education level over the years in Maryland counties, focusing on the percentage of adults with a bachelor's degree or higher from 1990 to 2000, faceted by county
+First we visual the change in education level over the years in Maryland counties, focusing on the percentage of adults with a bachelor's degree or higher from 1990 to 2000, faceted by county.
+
 ```{r}
 # extract only the education attribute with "Percent" in it
 MD.edu <- MD.data %>%
@@ -125,7 +145,6 @@ ggplot(MD.edu.de, aes(x = year_edu, y = Value_edu, fill = Attribute_edu)) +
        y = "Percentage of Adults",
        fill = "Education Level") +
   theme_minimal()
-
 ```
 
 Overall, we can see a trend of increasing education levels in Maryland counties over the years, with more adults attaining higher education degrees.
@@ -143,6 +162,7 @@ MD.income.edu <- MD.edu.de %>%
 ```
 
 Now we can create a scatter plot to visualize the relationship between education level and median household income in Maryland counties, also include a linear regression line to see the trend. 
+
 ```{r}
 # also label the indivual points with county names, excluding the "county" suffix for better readability, also adjust the text position to avoid overlap with points, also adding connecting line
 ggplot(MD.income.edu, aes(x = Education, y = Median_Income)) +
@@ -160,6 +180,10 @@ ggplot(MD.income.edu, aes(x = Education, y = Median_Income)) +
 model <- lm(Median_Income ~ Education, data = MD.income.edu)
 summary(model)
 ```
+
+
+## Sumary
+We can see from the scatter plot and the linear regression line that there is a positive correlation between the percentage of adults with a bachelor's degree or higher and the median household income in Maryland counties. The linear model summary shows that for every 1% increase in the percentage of adults with a bachelor's degree or higher, the median household income increases by approximately $1,613. This suggests that higher education levels are associated with higher income levels in Maryland counties. However, this is a correlational relationship and does not imply causation. Other factors may also contribute to income levels, and further analysis would be needed to establish causality, also the direction of causality cannot be determined from this analysis alone, ie. whether higher education leads to higher income or vice versa.
 
 ## Summary for used functions for TA grading
 `dplyr`
@@ -180,6 +204,11 @@ summary(model)
 - `geom_bar()`
 - `facet_wrap()`
 - `labs()`
+
+## Including .bib
+```{r}
+
+```
 
 ## Session Info
 ```{r}
