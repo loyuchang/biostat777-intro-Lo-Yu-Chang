@@ -1,3 +1,3 @@
 # biostat777-intro-Lo-Yu-Chang
 
-This is a part of Assignment 1
+This is a part of Assignment 1. The website was created using Quarto and R, and hosted on GitHub Pages.
