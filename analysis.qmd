@@ -10,8 +10,9 @@ Here is an example analysis using R code.
 
 Education level is often considered a key factor influencing income levels [@tamborini2015education]. Higher educational attainment is generally associated with better job opportunities, higher salaries, and improved economic stability. This example analysis aims to explore the relationship between education levels and income in Maryland counties using publicly available datasets, and use it to demonstrate data manipulation and visualization techniques in R. Here, I will focus on Maryland as an example state, but similar analyses can be conducted for other states or regions.
 
-![Maryland County Map](images/Map.jpg){width=200px fig-align="center"}
-[@MdCountiesMap2025]
+![Maryland County Map](images/Map.jpg){width=400px fig-align="center"}
+
+Image from [@MdCountiesMap2025]
 
 
 ## Aims
@@ -208,35 +209,63 @@ As mentioned earlier, the `Area name` columns are different in the two datasets,
 Finally, I can create a stacked bar chart to visualize the change in education levels over the years in Maryland counties, faceted by county. I also want to make sure the order of the education levels in the stacked bar chart is from lowest to highest.
 
 ```{r}
+#| fig-height: 10
+
 # relevel the Attribute factor levels to ensure proper order in the stacked bar chart
 MD.edu.clean$Attribute <- factor(MD.edu.clean$Attribute, 
-                                 levels = c("Less than high school", 
-                                            "High school", 
-                                            "Some college or associate degree", 
-                                            "Bachelor or Higher"))
+                                 levels = c("Bachelor or Higher",
+                                 "Some college or associate degree",
+                                 "High school",
+                                 "Less than high school"))
+# shorten the year label to be 70', 80', etc.
+
+MD.edu.clean <- MD.edu.clean %>%
+  mutate(Year = case_when(
+    Year == "1970" ~ "70'",
+    Year == "1980" ~ "80'",
+    Year == "1990" ~ "90'",
+    Year == "2000" ~ "00'",
+    Year == "2008" ~ "08'",
+    Year == "2019" ~ "19'",
+    TRUE ~ Year
+  ))
+# also to make sure the year is in the correct order
+MD.edu.clean$Year <- factor(MD.edu.clean$Year, 
+                             levels = c("70'", "80'", "90'", "00'", "08'", "19'"))
+
+# move the legend to the bottom for better readability
 ggplot(MD.edu.clean, aes(x = Year, y = Value, fill = Attribute)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ `Area name`) +
-  labs(title = "Education Level Distribution in Maryland Counties (1990-2023)",
-subtitle = 'Faceted by County',
+  labs(title = "Marylanders are getting more 'educated' over the years",
+subtitle = 'Education Level Distribution in Maryland Counties (1970-2019)',
        x = "Year",
        y = "Percentage of Adults",
        fill = "Education Level",
        caption = "Data From USDA 2025\nData visualization by Lo-Yu Chang") +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", title.hjust = 0.5)) +
+  theme(
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 8),
+    legend.key.size = unit(0.6, "lines")
+  )
+
 ```
 
 Overall, we can see a trend of increasing education levels in Maryland counties over the years, with more adults attaining higher education degrees.
 
 Now we can create a line graph to visualize the change in employment status over the years in Maryland counties, faceted by county. 
 ```{r}
+#| fig-height: 10
 ggplot(MD.employment, aes(x = Year, y = Value, group = 1)) +
   geom_line() +
   geom_point() +
   facet_wrap(~ `Area_name`) + # I want to change year interval to be every 5 years
-  scale_x_discrete(breaks = seq(1990, 2022, by = 5)) +
-  labs(title = "Unemployment Rate in Maryland Counties (1990-2022)",
-subtitle = "Faceted by County",
+  scale_x_discrete(breaks = seq(1990, 2022, by = 10)) +
+  labs(title = "2008 and 2020 Depressions Caused Significant Spikes in Unemployment Rates",
+subtitle = "Unemployment Rate in Maryland Counties (1990-2022)",
        x = "Year",
        y = "Unemployment Rate (%)",
        caption = "Data From USDA 2025\nData visualization by Lo-Yu Chang") +
@@ -252,8 +281,8 @@ ggplot(MD.income.edu, aes(x = Percent_bachelor, y = Median_Income)) +
   geom_point() +
   geom_text(aes(label = `Area name`), vjust = -0.5, hjust = 0.5, size = 3) +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
-  labs(title = "Relationship between Education Level and Median Household Income in Maryland Counties",
-  subtitle = "2019 Education Data and 2022 Income Data",
+  labs(title = "Education Level is Positively Correlated with Median Household Income",
+  subtitle = "Relationship between Education Level and Median Household Income in Maryland Counties",
        x = "Percentage of Adults with Bachelor's Degree or Higher (2019)",
        y = "Median Household Income (2022)",
        caption = "Data From USDA 2025\nData visualization by Lo-Yu Chang") + 
