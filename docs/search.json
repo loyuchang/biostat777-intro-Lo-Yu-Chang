@@ -1,40 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Lo-Yu Chang",
-    "section": "",
-    "text": "Hello, I am Lo-Yu Chang, a Biochemistry, Cellular and Molecular Biology (BCMB) PhD student and concurrent Biostatistics MHS student at the Johns Hopkins University."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "PhD candidate | Biochemistry, Cellular and Molecular Biology (BCMB) | Johns Hopkins University | 2022 - Present\n\nAdvisor: Dr. Luisa Cochella\n\nMHS candidate | Biostatistics | Johns Hopkins Bloomberg School of Public Health | 2023 - Present\n\nAdvisor: Dr. Hongkai Ji\n\nMD | National Taiwan University | 2014 - 2022\nBS | National Taiwan University | 2014 - 2022\n\nMajor: Geosciences; Minor: Anthopology"
-  },
-  {
-    "objectID": "about.html#education",
-    "href": "about.html#education",
-    "title": "About",
-    "section": "",
-    "text": "PhD candidate | Biochemistry, Cellular and Molecular Biology (BCMB) | Johns Hopkins University | 2022 - Present\n\nAdvisor: Dr. Luisa Cochella\n\nMHS candidate | Biostatistics | Johns Hopkins Bloomberg School of Public Health | 2023 - Present\n\nAdvisor: Dr. Hongkai Ji\n\nMD | National Taiwan University | 2014 - 2022\nBS | National Taiwan University | 2014 - 2022\n\nMajor: Geosciences; Minor: Anthopology"
-  },
-  {
-    "objectID": "about.html#experience",
-    "href": "about.html#experience",
-    "title": "About",
-    "section": "Experience",
-    "text": "Experience\n\nJohns Hopkins University | Graduate Research Assistant | 2022 - Present\nUndergraduate Research Assistant | National Taiwan University | 2016-2022"
-  },
-  {
-    "objectID": "about.html#fun",
-    "href": "about.html#fun",
-    "title": "About",
-    "section": "Fun",
-    "text": "Fun\nOutside of lab, I enjoy railfanning, attending my aquarium and plants, and astronomy.\nFun fact: JHU has a telescope that is open to public on certain Fridays, and you can get trained to use it as well!"
-  },
-  {
     "objectID": "analysis.html",
     "href": "analysis.html",
     "title": "Example analysis",
@@ -98,11 +63,11 @@
     "text": "Step 3. Data Analysis and Visualization\nFinally, I can create a stacked bar chart to visualize the change in education levels over the years in Maryland counties, faceted by county. I also want to make sure the order of the education levels in the stacked bar chart is from lowest to highest.\n\n# relevel the Attribute factor levels to ensure proper order in the stacked bar chart\nMD.edu.clean$Attribute &lt;- factor(MD.edu.clean$Attribute, \n                                 levels = c(\"Less than high school\", \n                                            \"High school\", \n                                            \"Some college or associate degree\", \n                                            \"Bachelor or Higher\"))\nggplot(MD.edu.clean, aes(x = Year, y = Value, fill = Attribute)) +\n  geom_bar(stat = \"identity\") +\n  facet_wrap(~ `Area name`) +\n  labs(title = \"Education Level Distribution in Maryland Counties (1990-2023)\",\n       x = \"Year\",\n       y = \"Percentage of Adults\",\n       fill = \"Education Level\",\n       caption = \"Data From USDA 2025\\nData visualization by Lo-Yu Chang\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\nOverall, we can see a trend of increasing education levels in Maryland counties over the years, with more adults attaining higher education degrees.\nNow we can create a line graph to visualize the change in employment status over the years in Maryland counties, faceted by county.\n\nggplot(MD.employment, aes(x = Year, y = Value, group = 1)) +\n  geom_line() +\n  geom_point() +\n  facet_wrap(~ `Area_name`) + # I want to change year interval to be every 5 years\n  scale_x_discrete(breaks = seq(1990, 2022, by = 5)) +\n  labs(title = \"Unemployment Rate in Maryland Counties (1990-2022)\",\n       x = \"Year\",\n       y = \"Unemployment Rate (%)\",\n       caption = \"Data From USDA 2025\\nData visualization by Lo-Yu Chang\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\nOverall, we can see that the unemployment rates in Maryland counties have fluctuated over the years, with some counties experiencing higher rates than others. The main two peaks in unemployment rates correspond to the Great Recession of 2008-2009 and COVID-19 pandemic in 2020.\nNow we can create a scatter plot to visualize the relationship between education level and median household income in Maryland counties, also include a linear regression line to see the trend.\n\nggplot(MD.income.edu, aes(x = Percent_bachelor, y = Median_Income)) +\n  geom_point() +\n  geom_text(aes(label = `Area name`), vjust = -0.5, hjust = 0.5, size = 3) +\n  geom_smooth(method = \"lm\", se = FALSE, color = \"blue\") +\n  labs(title = \"Relationship between Education Level and Median Household Income in Maryland Counties\",\n       x = \"Percentage of Adults with Bachelor's Degree or Higher (2019)\",\n       y = \"Median Household Income (2022)\",\n       caption = \"Data From USDA 2025\\nData visualization by Lo-Yu Chang\") + \n  theme_minimal()\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\n\n\n\n\nFor more quantitative analysis, we can fit a linear model to see the correlation coefficient between education level and median household income.\n\nmodel &lt;- lm(Median_Income ~ Percent_bachelor, data = MD.income.edu)\nsummary(model)\n\n\nCall:\nlm(formula = Median_Income ~ Percent_bachelor, data = MD.income.edu)\n\nResiduals:\n   Min     1Q Median     3Q    Max \n-33508 -10324  -2035   9894  30802 \n\nCoefficients:\n                 Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)       31092.9    10570.4   2.941  0.00733 ** \nPercent_bachelor   1613.2      285.4   5.653 9.38e-06 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 16500 on 23 degrees of freedom\nMultiple R-squared:  0.5815,    Adjusted R-squared:  0.5633 \nF-statistic: 31.95 on 1 and 23 DF,  p-value: 9.378e-06"
   },
   {
-    "objectID": "analysis.html#sumary",
-    "href": "analysis.html#sumary",
+    "objectID": "analysis.html#summary",
+    "href": "analysis.html#summary",
     "title": "Example analysis",
-    "section": "Sumary",
-    "text": "Sumary\nWe can see from the scatter plot and the linear regression line that there is a positive correlation between the percentage of adults with a bachelor’s degree or higher and the median household income in Maryland counties. The linear model summary shows that for every 1% increase in the percentage of adults with a bachelor’s degree or higher, the median household income increases by approximately $1,613. This suggests that higher education levels are associated with higher income levels in Maryland counties. However, this is a correlational relationship and does not imply causation. Other factors may also contribute to income levels, and further analysis would be needed to establish causality, also the direction of causality cannot be determined from this analysis alone, ie. whether higher education leads to higher income or vice versa."
+    "section": "Summary",
+    "text": "Summary\nOver the last 40 years, Maryland counties have seen a significant increase in education levels, with more adults attaining higher education degrees. The unemployment rates in Maryland counties have fluctuated over the years, with some counties experiencing higher rates than others, particularly during economic downturns such as the 2008 Great Recession and the COVID-19 pandemic. As for the primary focus of this analysis, we can see from the scatter plot and the linear regression line that there is a positive correlation between the percentage of adults with a bachelor’s degree or higher and the median household income in Maryland counties. The linear model summary shows that for every 1% increase in the percentage of adults with a bachelor’s degree or higher, the median household income increases by approximately $1,613. This suggests that higher education levels are associated with higher income levels in Maryland counties. However, this is a correlational relationship and does not imply causation. Other factors may also contribute to income levels, and further analysis would be needed to establish causality, also the direction of causality cannot be determined from this analysis alone, ie. whether higher education leads to higher income or vice versa."
   },
   {
     "objectID": "analysis.html#summary-for-used-functions-for-ta-grading",
@@ -112,13 +77,6 @@
     "text": "Summary for used functions for TA grading\n\ndplyr\n\nfilter()\nmutate()\nselect()\ninner_join()\ncase_when()\n\n\n\ntidyr\n\npivot_wider()\n\nIn total 6 functions from dplyr and tidyr were used for data manipulation.\n\n\nggplot2\n\ngeom_point()\ngeom_text()\ngeom_smooth()\ngeom_bar()\nfacet_wrap()\nlabs()\ntheme_minimal()\nscale_x_discrete()\ngeom_line()\n\nIn total 9 functions from ggplot2 and specifically 5 geom_ functions were used for data visualization."
   },
   {
-    "objectID": "analysis.html#including-.bib",
-    "href": "analysis.html#including-.bib",
-    "title": "Example analysis",
-    "section": "Including .bib",
-    "text": "Including .bib"
-  },
-  {
     "objectID": "analysis.html#session-info",
     "href": "analysis.html#session-info",
     "title": "Example analysis",
@@ -126,10 +84,38 @@
     "text": "Session Info\n\nsession_info()\n\n─ Session info ───────────────────────────────────────────────────────────────\n setting  value\n version  R version 4.5.1 (2025-06-13)\n os       macOS Sequoia 15.3.2\n system   aarch64, darwin20\n ui       X11\n language (EN)\n collate  en_US.UTF-8\n ctype    en_US.UTF-8\n tz       America/New_York\n date     2025-11-06\n pandoc   3.6.3 @ /Applications/Positron.app/Contents/Resources/app/quarto/bin/tools/aarch64/ (via rmarkdown)\n quarto   1.8.25 @ /Applications/quarto/bin/quarto\n\n─ Packages ───────────────────────────────────────────────────────────────────\n package      * version date (UTC) lib source\n bit            4.6.0   2025-03-06 [1] CRAN (R 4.5.0)\n bit64          4.6.0-1 2025-01-16 [1] CRAN (R 4.5.0)\n cli            3.6.5   2025-04-23 [1] CRAN (R 4.5.0)\n crayon         1.5.3   2024-06-20 [1] CRAN (R 4.5.0)\n digest         0.6.37  2024-08-19 [1] CRAN (R 4.5.0)\n dplyr        * 1.1.4   2023-11-17 [1] CRAN (R 4.5.0)\n evaluate       1.0.5   2025-08-27 [1] CRAN (R 4.5.0)\n farver         2.1.2   2024-05-13 [1] CRAN (R 4.5.0)\n fastmap        1.2.0   2024-05-15 [1] CRAN (R 4.5.0)\n forcats      * 1.0.1   2025-09-25 [1] CRAN (R 4.5.0)\n generics       0.1.4   2025-05-09 [1] CRAN (R 4.5.0)\n ggplot2      * 4.0.0   2025-09-11 [1] CRAN (R 4.5.0)\n glue           1.8.0   2024-09-30 [1] CRAN (R 4.5.0)\n gtable         0.3.6   2024-10-25 [1] CRAN (R 4.5.0)\n here         * 1.0.2   2025-09-15 [1] CRAN (R 4.5.0)\n hms            1.1.4   2025-10-17 [1] CRAN (R 4.5.0)\n htmltools      0.5.8.1 2024-04-04 [1] CRAN (R 4.5.0)\n htmlwidgets    1.6.4   2023-12-06 [1] CRAN (R 4.5.0)\n jsonlite       2.0.0   2025-03-27 [1] CRAN (R 4.5.0)\n kableExtra   * 1.4.0   2024-01-24 [1] CRAN (R 4.5.0)\n knitr          1.50    2025-03-16 [1] CRAN (R 4.5.0)\n labeling       0.4.3   2023-08-29 [1] CRAN (R 4.5.0)\n lattice        0.22-7  2025-04-02 [1] CRAN (R 4.5.1)\n lifecycle      1.0.4   2023-11-07 [1] CRAN (R 4.5.0)\n lubridate    * 1.9.4   2024-12-08 [1] CRAN (R 4.5.0)\n magrittr       2.0.4   2025-09-12 [1] CRAN (R 4.5.0)\n Matrix         1.7-4   2025-08-28 [1] CRAN (R 4.5.0)\n mgcv           1.9-3   2025-04-04 [1] CRAN (R 4.5.1)\n nlme           3.1-168 2025-03-31 [1] CRAN (R 4.5.1)\n pillar         1.11.1  2025-09-17 [1] CRAN (R 4.5.0)\n pkgconfig      2.0.3   2019-09-22 [1] CRAN (R 4.5.0)\n purrr        * 1.1.0   2025-07-10 [1] CRAN (R 4.5.0)\n R6             2.6.1   2025-02-15 [1] CRAN (R 4.5.0)\n RColorBrewer   1.1-3   2022-04-03 [1] CRAN (R 4.5.0)\n readr        * 2.1.5   2024-01-10 [1] CRAN (R 4.5.0)\n rlang          1.1.6   2025-04-11 [1] CRAN (R 4.5.0)\n rmarkdown      2.30    2025-09-28 [1] CRAN (R 4.5.0)\n rprojroot      2.1.1   2025-08-26 [1] CRAN (R 4.5.0)\n rstudioapi     0.17.1  2024-10-22 [1] CRAN (R 4.5.0)\n S7             0.2.0   2024-11-07 [1] CRAN (R 4.5.0)\n scales         1.4.0   2025-04-24 [1] CRAN (R 4.5.0)\n sessioninfo  * 1.2.3   2025-02-05 [1] CRAN (R 4.5.0)\n stringi        1.8.7   2025-03-27 [1] CRAN (R 4.5.0)\n stringr      * 1.5.2   2025-09-08 [1] CRAN (R 4.5.0)\n svglite        2.2.1   2025-05-12 [1] CRAN (R 4.5.0)\n systemfonts    1.3.1   2025-10-01 [1] CRAN (R 4.5.0)\n textshaping    1.0.4   2025-10-10 [1] CRAN (R 4.5.0)\n tibble       * 3.3.0   2025-06-08 [1] CRAN (R 4.5.0)\n tidyr        * 1.3.1   2024-01-24 [1] CRAN (R 4.5.0)\n tidyselect     1.2.1   2024-03-11 [1] CRAN (R 4.5.0)\n tidyverse    * 2.0.0   2023-02-22 [1] CRAN (R 4.5.0)\n timechange     0.3.0   2024-01-18 [1] CRAN (R 4.5.0)\n tzdb           0.5.0   2025-03-15 [1] CRAN (R 4.5.0)\n utf8           1.2.6   2025-06-08 [1] CRAN (R 4.5.0)\n vctrs          0.6.5   2023-12-01 [1] CRAN (R 4.5.0)\n viridisLite    0.4.2   2023-05-02 [1] CRAN (R 4.5.0)\n vroom          1.6.6   2025-09-19 [1] CRAN (R 4.5.0)\n withr          3.0.2   2024-10-28 [1] CRAN (R 4.5.0)\n xfun           0.53    2025-08-19 [1] CRAN (R 4.5.0)\n xml2           1.4.0   2025-08-20 [1] CRAN (R 4.5.0)\n yaml           2.3.10  2024-07-26 [1] CRAN (R 4.5.0)\n\n [1] /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library\n * ── Packages attached to the search path.\n\n──────────────────────────────────────────────────────────────────────────────"
   },
   {
-    "objectID": "analysis.html#summary",
-    "href": "analysis.html#summary",
-    "title": "Example analysis",
-    "section": "Summary",
-    "text": "Summary\nOver the last 40 years, Maryland counties have seen a significant increase in education levels, with more adults attaining higher education degrees. The unemployment rates in Maryland counties have fluctuated over the years, with some counties experiencing higher rates than others, particularly during economic downturns such as the 2008 Great Recession and the COVID-19 pandemic. As for the primary focus of this analysis, we can see from the scatter plot and the linear regression line that there is a positive correlation between the percentage of adults with a bachelor’s degree or higher and the median household income in Maryland counties. The linear model summary shows that for every 1% increase in the percentage of adults with a bachelor’s degree or higher, the median household income increases by approximately $1,613. This suggests that higher education levels are associated with higher income levels in Maryland counties. However, this is a correlational relationship and does not imply causation. Other factors may also contribute to income levels, and further analysis would be needed to establish causality, also the direction of causality cannot be determined from this analysis alone, ie. whether higher education leads to higher income or vice versa."
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "PhD candidate | Biochemistry, Cellular and Molecular Biology (BCMB) | Johns Hopkins University | 2022 - Present\n\nAdvisor: Dr. Luisa Cochella\n\nMHS candidate | Biostatistics | Johns Hopkins Bloomberg School of Public Health | 2023 - Present\n\nAdvisor: Dr. Hongkai Ji\n\nMD | National Taiwan University | 2014 - 2022\nBS | National Taiwan University | 2014 - 2022\n\nMajor: Geosciences; Minor: Anthopology"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About",
+    "section": "",
+    "text": "PhD candidate | Biochemistry, Cellular and Molecular Biology (BCMB) | Johns Hopkins University | 2022 - Present\n\nAdvisor: Dr. Luisa Cochella\n\nMHS candidate | Biostatistics | Johns Hopkins Bloomberg School of Public Health | 2023 - Present\n\nAdvisor: Dr. Hongkai Ji\n\nMD | National Taiwan University | 2014 - 2022\nBS | National Taiwan University | 2014 - 2022\n\nMajor: Geosciences; Minor: Anthopology"
+  },
+  {
+    "objectID": "about.html#experience",
+    "href": "about.html#experience",
+    "title": "About",
+    "section": "Experience",
+    "text": "Experience\n\nJohns Hopkins University | Graduate Research Assistant | 2022 - Present\nUndergraduate Research Assistant | National Taiwan University | 2016-2022"
+  },
+  {
+    "objectID": "about.html#fun",
+    "href": "about.html#fun",
+    "title": "About",
+    "section": "Fun",
+    "text": "Fun\nOutside of lab, I enjoy railfanning, attending my aquarium and plants, and astronomy.\nFun fact: JHU has a telescope, which is open to public on certain Fridays, and you can get trained to use it as well!"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Lo-Yu Chang",
+    "section": "",
+    "text": "Hello, I am Lo-Yu Chang, a Biochemistry, Cellular and Molecular Biology (BCMB) PhD student and concurrent Biostatistics MHS student at the Johns Hopkins University."
   }
 ]

@@ -22,4 +22,4 @@ format: html
 
 Outside of lab, I enjoy railfanning, attending my aquarium and plants, and astronomy.
 
-***Fun fact:*** JHU has a [telescope](https://md.spacegrant.org/observatory-open-house/) that is open to public on certain Fridays, and you can get trained to use it as well!
+***Fun fact:*** JHU has a [telescope](https://md.spacegrant.org/observatory-open-house/), which is open to public on certain Fridays, and you can get trained to use it as well!
