@@ -191,7 +191,7 @@ div.csl-indent {
   <li><a href="#step-1.-load-required-packages-and-read-in-the-datasets" id="toc-step-1.-load-required-packages-and-read-in-the-datasets" class="nav-link" data-scroll-target="#step-1.-load-required-packages-and-read-in-the-datasets">Step 1. Load required packages and read in the datasets</a></li>
   <li><a href="#step-2.-data-wrangling-and-merging-datasets" id="toc-step-2.-data-wrangling-and-merging-datasets" class="nav-link" data-scroll-target="#step-2.-data-wrangling-and-merging-datasets">Step 2. Data Wrangling and Merging Datasets</a></li>
   <li><a href="#step-3.-data-analysis-and-visualization" id="toc-step-3.-data-analysis-and-visualization" class="nav-link" data-scroll-target="#step-3.-data-analysis-and-visualization">Step 3. Data Analysis and Visualization</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#result-summary" id="toc-result-summary" class="nav-link" data-scroll-target="#result-summary">Result Summary</a></li>
   <li><a href="#summary-for-used-functions-for-ta-grading" id="toc-summary-for-used-functions-for-ta-grading" class="nav-link" data-scroll-target="#summary-for-used-functions-for-ta-grading">Summary for used functions for TA grading</a>
   <ul class="collapse">
   <li><a href="#dplyr" id="toc-dplyr" class="nav-link" data-scroll-target="#dplyr"><code>dplyr</code></a></li>
@@ -320,7 +320,7 @@ div.csl-indent {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>For example, in the education dataset, the FIPS code column is named “FIPS Code”, while in the unemployment dataset, it is named “FIPS_Code”. This difference in naming conventions can lead to errors when merging datasets if not properly addressed. I will proceed to clean up this later in the analysis.</p>
+<p>For example, in the education dataset, the FIPS code column is named <code>FIPS Code</code>, while in the unemployment dataset, it is named <code>FIPS_Code</code>. Also the <code>Area name</code> and <code>Area_Name</code>. This difference in naming conventions can lead to errors when merging datasets if not properly addressed. I will proceed to clean up this later in the analysis.</p>
 </div>
 </div>
 </section>
@@ -362,36 +362,16 @@ div.csl-indent {
 </div>
 <p>Then read in the datasets:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>education_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data/Education2023.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 169245 Columns: 5
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (3): State, Area name, Attribute
-dbl (2): FIPS Code, Value
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>unemployment_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data/Unemployment2023.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 329726 Columns: 5
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (3): State, Area_Name, Attribute
-dbl (2): FIPS_Code, Value
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>MD.edu <span class="ot">&lt;-</span> education_data <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(State <span class="sc">==</span> <span class="st">"MD"</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>MD.income <span class="ot">&lt;-</span> unemployment_data <span class="sc">%&gt;%</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(State <span class="sc">==</span> <span class="st">"MD"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>education_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data/Education2023.csv"</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>unemployment_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data/Unemployment2023.csv"</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>MD.edu <span class="ot">&lt;-</span> education_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(State <span class="sc">==</span> <span class="st">"MD"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>MD.income <span class="ot">&lt;-</span> unemployment_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(State <span class="sc">==</span> <span class="st">"MD"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can take a look at the first few rows of each dataset to understand their structure</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MD.edu)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MD.edu)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
   `FIPS Code` State `Area name` Attribute                                  Value
@@ -403,7 +383,7 @@ dbl (2): FIPS_Code, Value
 5       24000 MD    Maryland    Percent of adults with less than a high … 4.77e1
 6       24000 MD    Maryland    Percent of adults with a high school dip… 2.85e1</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MD.income)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MD.income)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
   FIPS_Code State Area_Name Attribute                     Value
@@ -421,19 +401,19 @@ dbl (2): FIPS_Code, Value
 <h2 class="anchored" data-anchor-id="step-2.-data-wrangling-and-merging-datasets">Step 2. Data Wrangling and Merging Datasets</h2>
 <p>First we can plot relationship between the percentage of individuals with a bachelor’s degree or higher and the median household income in Maryland counties, and focusing on the education data from 2019-2023 and the unemployment data from 2022. I clean up the names, removing the “county” suffix for better readability, also seperate the year from the attribute name, both for education and unemployment data. Also, <code>Attribute_edu</code> will be “attribute, year”, <code>Attribute_unemp</code> will be “attribute_year”, and I want to slice off the year part for both to put in separate columns “year_edu” and “year_unemp”</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>MD.edu.clean <span class="ot">&lt;-</span> MD.edu <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Area name</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_replace</span>(<span class="st">`</span><span class="at">Area name</span><span class="st">`</span>, <span class="st">" County"</span>, <span class="st">""</span>),</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">Year =</span> <span class="fu">str_extract</span>(Attribute, <span class="st">"</span><span class="sc">\\</span><span class="st">d{4}"</span>),</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Attribute =</span> <span class="fu">str_remove</span>(Attribute, <span class="st">", </span><span class="sc">\\</span><span class="st">d{4}"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>MD.edu.clean <span class="ot">&lt;-</span> MD.edu <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Area name</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_replace</span>(<span class="st">`</span><span class="at">Area name</span><span class="st">`</span>, <span class="st">" County"</span>, <span class="st">""</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">Year =</span> <span class="fu">str_extract</span>(Attribute, <span class="st">"</span><span class="sc">\\</span><span class="st">d{4}"</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Attribute =</span> <span class="fu">str_remove</span>(Attribute, <span class="st">", </span><span class="sc">\\</span><span class="st">d{4}"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>First we visual the change in education level over the years in Maryland counties, focusing on the percentage of adults with a bachelor’s degree or higher from 1990 to 2000, faceted by county. Due to there are both raw counts and percentage values in the education data, I will first filter to only keep the percentage values.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>MD.edu.clean <span class="ot">&lt;-</span> MD.edu.clean <span class="sc">%&gt;%</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(Attribute , <span class="st">"Percent"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>MD.edu.clean <span class="ot">&lt;-</span> MD.edu.clean <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(Attribute , <span class="st">"Percent"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Then I will check the unique attributes in the education data to see if there are any redundant labels that need to be collapsed.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(MD.edu.clean<span class="sc">$</span>Attribute)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(MD.edu.clean<span class="sc">$</span>Attribute)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "Percent of adults with less than a high school diploma"            
  [2] "Percent of adults with a high school diploma only"                 
@@ -457,37 +437,37 @@ dbl (2): FIPS_Code, Value
 <div class="no-row-height column-margin column-container"><div class="">
 <p>Unfortunately, there are multiple labels that mean the same thing, so I will need to collapse them into a single label for each education level.</p>
 </div></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>MD.edu.clean <span class="ot">&lt;-</span> MD.edu.clean <span class="sc">%&gt;%</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Attribute =</span> <span class="fu">case_when</span>(</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    Attribute <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Percent of adults with less than a high school diploma"</span>, </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are not high school graduates"</span>,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are not high school graduates-12"</span>,</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are not high school graduates-23"</span>) <span class="sc">~</span> <span class="st">"Less than high school"</span>,</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    Attribute <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Percent of adults with a high school diploma only"</span>, </span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are high school graduates (or equivalent)"</span>,</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are high school graduates (or equivalent)-12"</span>,</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are high school graduates (or equivalent)-23"</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>                         ) <span class="sc">~</span> <span class="st">"High school"</span>,</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    Attribute <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Percent of adults completing some college (1-3 years)"</span>,</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Percent of adults completing some college or associate degree"</span>,</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Percent of adults completing some college or associate degree-12"</span>,</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Percent of adults completing some college or associate degree-23"</span>) <span class="sc">~</span> <span class="st">"Some college or associate degree"</span>,</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    Attribute <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Percent of adults completing four years of college or higher"</span>,</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Percent of adults with a bachelor's degree or higher"</span>,</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults with a bachelor's degree or higher-12"</span>,</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults with a bachelor's degree or higher-23"</span>) <span class="sc">~</span> <span class="st">"Bachelor or Higher"</span>,</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> Attribute</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  ))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>MD.edu.clean <span class="ot">&lt;-</span> MD.edu.clean <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Attribute =</span> <span class="fu">case_when</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    Attribute <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Percent of adults with less than a high school diploma"</span>, </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are not high school graduates"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are not high school graduates-12"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are not high school graduates-23"</span>) <span class="sc">~</span> <span class="st">"Less than high school"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    Attribute <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Percent of adults with a high school diploma only"</span>, </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are high school graduates (or equivalent)"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are high school graduates (or equivalent)-12"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults who are high school graduates (or equivalent)-23"</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                         ) <span class="sc">~</span> <span class="st">"High school"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    Attribute <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Percent of adults completing some college (1-3 years)"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Percent of adults completing some college or associate degree"</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Percent of adults completing some college or associate degree-12"</span>,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Percent of adults completing some college or associate degree-23"</span>) <span class="sc">~</span> <span class="st">"Some college or associate degree"</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    Attribute <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Percent of adults completing four years of college or higher"</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Percent of adults with a bachelor's degree or higher"</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults with a bachelor's degree or higher-12"</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Percent of adults with a bachelor's degree or higher-23"</span>) <span class="sc">~</span> <span class="st">"Bachelor or Higher"</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> Attribute</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  ))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>I can use <code>piviot_wider()</code> to reshape the data so that each education level becomes a separate column, making it easier to analyze the distribution of education levels over the years.</p>
+<p>I can use <code>piviot_wider()</code> to reshape the data so that each education level becomes a separate column, making it easier to be read by human and use kable to display the data in a nice table format.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>MD.edu.wide <span class="ot">&lt;-</span> MD.edu.clean <span class="sc">%&gt;%</span> </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Attribute, <span class="at">values_from =</span> Value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>MD.edu.wide <span class="ot">&lt;-</span> MD.edu.clean <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Attribute, <span class="at">values_from =</span> Value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(MD.edu.wide, <span class="at">caption =</span> <span class="st">"Maryland Educational Level by County, 1970 - 2019"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F) <span class="sc">%&gt;%</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">"100%"</span>, <span class="at">height =</span> <span class="st">"400px"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(MD.edu.wide, <span class="at">caption =</span> <span class="st">"Maryland Educational Level by County, 1970 - 2019"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">"100%"</span>, <span class="at">height =</span> <span class="st">"400px"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; ">
 <table class="table caption-top table-sm table-striped small">
@@ -2012,26 +1992,26 @@ dbl (2): FIPS_Code, Value
 </div>
 <p>Now we can focus on the income data. We can first look at the unemployment rates in Maryland counties change in years, faceted by county.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>MD.income.clean <span class="ot">&lt;-</span> MD.income <span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Area_name</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_replace</span>(<span class="st">`</span><span class="at">Area_Name</span><span class="st">`</span>, <span class="st">" County, MD"</span>, <span class="st">""</span>),</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">Year =</span> <span class="fu">str_extract</span>(Attribute, <span class="st">"</span><span class="sc">\\</span><span class="st">d{4}"</span>),</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Attribute =</span> <span class="fu">str_remove</span>(Attribute, <span class="st">"_</span><span class="sc">\\</span><span class="st">d{4}"</span>))</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># manually change Baltimore city, MD to Baltimore city</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>MD.income.clean <span class="ot">&lt;-</span> MD.income.clean <span class="sc">%&gt;%</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Area_name</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Area_name</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Baltimore city, MD"</span>, <span class="st">"Baltimore city"</span>, <span class="st">`</span><span class="at">Area_name</span><span class="st">`</span>))</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>MD.employment <span class="ot">&lt;-</span> MD.income.clean <span class="sc">%&gt;%</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Attribute <span class="sc">==</span> <span class="st">"Unemployment_rate"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>MD.income.clean <span class="ot">&lt;-</span> MD.income <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Area_name</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_replace</span>(<span class="st">`</span><span class="at">Area_Name</span><span class="st">`</span>, <span class="st">" County, MD"</span>, <span class="st">""</span>),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">Year =</span> <span class="fu">str_extract</span>(Attribute, <span class="st">"</span><span class="sc">\\</span><span class="st">d{4}"</span>),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Attribute =</span> <span class="fu">str_remove</span>(Attribute, <span class="st">"_</span><span class="sc">\\</span><span class="st">d{4}"</span>))</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># manually change Baltimore city, MD to Baltimore city</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>MD.income.clean <span class="ot">&lt;-</span> MD.income.clean <span class="sc">%&gt;%</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Area_name</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Area_name</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Baltimore city, MD"</span>, <span class="st">"Baltimore city"</span>, <span class="st">`</span><span class="at">Area_name</span><span class="st">`</span>))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>MD.employment <span class="ot">&lt;-</span> MD.income.clean <span class="sc">%&gt;%</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Attribute <span class="sc">==</span> <span class="st">"Unemployment_rate"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The data is already tidy in the long-format, but since I am interested in combining the education information with employment data, I will need to merge them together using the common column “FIPS”, which represents the unique identifier for each geological area. Now we can analyze the relationship between education level and median household income in Maryland counties. We will focus on the education data from 2019 and the income data from 2022.</p>
+<p>The data is already tidy in the long-format, but since I am interested in combining the education information with employment data, I will need to merge them together using the common column <code>Area name</code>, which represents the unique identifier for each geological area. Now we can analyze the relationship between education level and median household income in Maryland counties. We will focus on the education data from 2019 and the income data from 2022.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>MD.income.edu <span class="ot">&lt;-</span> MD.edu.clean <span class="sc">%&gt;%</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">==</span> <span class="st">"2019"</span>, Attribute <span class="sc">==</span> <span class="st">"Bachelor or Higher"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">Area name</span><span class="st">`</span>, <span class="at">Percent_bachelor =</span> Value) <span class="sc">%&gt;%</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(MD.income.clean <span class="sc">%&gt;%</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>               <span class="fu">filter</span>(Year <span class="sc">==</span> <span class="st">"2022"</span>, Attribute <span class="sc">==</span> <span class="st">"Median_Household_Income"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>               <span class="fu">select</span>(<span class="st">`</span><span class="at">Area name</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Area_name</span><span class="st">`</span>, <span class="at">Median_Income =</span> Value),</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">by =</span> <span class="st">"Area name"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>MD.income.edu <span class="ot">&lt;-</span> MD.edu.clean <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">==</span> <span class="st">"2019"</span>, Attribute <span class="sc">==</span> <span class="st">"Bachelor or Higher"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">Area name</span><span class="st">`</span>, <span class="at">Percent_bachelor =</span> Value) <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(MD.income.clean <span class="sc">%&gt;%</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>               <span class="fu">filter</span>(Year <span class="sc">==</span> <span class="st">"2022"</span>, Attribute <span class="sc">==</span> <span class="st">"Median_Household_Income"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>               <span class="fu">select</span>(<span class="st">`</span><span class="at">Area name</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Area_name</span><span class="st">`</span>, <span class="at">Median_Income =</span> Value),</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">by =</span> <span class="st">"Area name"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2043,29 +2023,30 @@ dbl (2): FIPS_Code, Value
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>As mentioned earlier, the Area name columns are different in the two datasets, so I need to specify the column names when merging the datasets using <code>inner_join()</code>.</p>
+<p>As mentioned earlier, the <code>Area name</code> columns are different in the two datasets, so I need to specify the column names when merging the datasets using <code>inner_join()</code>.</p>
 </div>
 </div>
 </section>
-<section id="step-3.-data-analysis-and-visualization" class="level2">
+<section id="step-3.-data-analysis-and-visualization" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="step-3.-data-analysis-and-visualization">Step 3. Data Analysis and Visualization</h2>
 <p>Finally, I can create a stacked bar chart to visualize the change in education levels over the years in Maryland counties, faceted by county. I also want to make sure the order of the education levels in the stacked bar chart is from lowest to highest.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># relevel the Attribute factor levels to ensure proper order in the stacked bar chart</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>MD.edu.clean<span class="sc">$</span>Attribute <span class="ot">&lt;-</span> <span class="fu">factor</span>(MD.edu.clean<span class="sc">$</span>Attribute, </span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Less than high school"</span>, </span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">"High school"</span>, </span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">"Some college or associate degree"</span>, </span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">"Bachelor or Higher"</span>))</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MD.edu.clean, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Value, <span class="at">fill =</span> Attribute)) <span class="sc">+</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">`</span><span class="at">Area name</span><span class="st">`</span>) <span class="sc">+</span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Education Level Distribution in Maryland Counties (1990-2023)"</span>,</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage of Adults"</span>,</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Education Level"</span>,</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data From USDA 2025</span><span class="sc">\n</span><span class="st">Data visualization by Lo-Yu Chang"</span>) <span class="sc">+</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># relevel the Attribute factor levels to ensure proper order in the stacked bar chart</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>MD.edu.clean<span class="sc">$</span>Attribute <span class="ot">&lt;-</span> <span class="fu">factor</span>(MD.edu.clean<span class="sc">$</span>Attribute, </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Less than high school"</span>, </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">"High school"</span>, </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">"Some college or associate degree"</span>, </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">"Bachelor or Higher"</span>))</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MD.edu.clean, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Value, <span class="at">fill =</span> Attribute)) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">`</span><span class="at">Area name</span><span class="st">`</span>) <span class="sc">+</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Education Level Distribution in Maryland Counties (1990-2023)"</span>,</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="at">subtitle =</span> <span class="st">'Faceted by County'</span>,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage of Adults"</span>,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Education Level"</span>,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data From USDA 2025</span><span class="sc">\n</span><span class="st">Data visualization by Lo-Yu Chang"</span>) <span class="sc">+</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2077,16 +2058,17 @@ dbl (2): FIPS_Code, Value
 <p>Overall, we can see a trend of increasing education levels in Maryland counties over the years, with more adults attaining higher education degrees.</p>
 <p>Now we can create a line graph to visualize the change in employment status over the years in Maryland counties, faceted by county.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MD.employment, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Value, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">`</span><span class="at">Area_name</span><span class="st">`</span>) <span class="sc">+</span> <span class="co"># I want to change year interval to be every 5 years</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1990</span>, <span class="dv">2022</span>, <span class="at">by =</span> <span class="dv">5</span>)) <span class="sc">+</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment Rate in Maryland Counties (1990-2022)"</span>,</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Unemployment Rate (%)"</span>,</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data From USDA 2025</span><span class="sc">\n</span><span class="st">Data visualization by Lo-Yu Chang"</span>) <span class="sc">+</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MD.employment, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Value, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">`</span><span class="at">Area_name</span><span class="st">`</span>) <span class="sc">+</span> <span class="co"># I want to change year interval to be every 5 years</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1990</span>, <span class="dv">2022</span>, <span class="at">by =</span> <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment Rate in Maryland Counties (1990-2022)"</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="at">subtitle =</span> <span class="st">"Faceted by County"</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Unemployment Rate (%)"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data From USDA 2025</span><span class="sc">\n</span><span class="st">Data visualization by Lo-Yu Chang"</span>) <span class="sc">+</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2098,15 +2080,16 @@ dbl (2): FIPS_Code, Value
 <p>Overall, we can see that the unemployment rates in Maryland counties have fluctuated over the years, with some counties experiencing higher rates than others. The main two peaks in unemployment rates correspond to the Great Recession of 2008-2009 and COVID-19 pandemic in 2020.</p>
 <p>Now we can create a scatter plot to visualize the relationship between education level and median household income in Maryland counties, also include a linear regression line to see the trend.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MD.income.edu, <span class="fu">aes</span>(<span class="at">x =</span> Percent_bachelor, <span class="at">y =</span> Median_Income)) <span class="sc">+</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="st">`</span><span class="at">Area name</span><span class="st">`</span>), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between Education Level and Median Household Income in Maryland Counties"</span>,</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Percentage of Adults with Bachelor's Degree or Higher (2019)"</span>,</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Median Household Income (2022)"</span>,</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data From USDA 2025</span><span class="sc">\n</span><span class="st">Data visualization by Lo-Yu Chang"</span>) <span class="sc">+</span> </span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MD.income.edu, <span class="fu">aes</span>(<span class="at">x =</span> Percent_bachelor, <span class="at">y =</span> Median_Income)) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="st">`</span><span class="at">Area name</span><span class="st">`</span>), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between Education Level and Median Household Income in Maryland Counties"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"2019 Education Data and 2022 Income Data"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Percentage of Adults with Bachelor's Degree or Higher (2019)"</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Median Household Income (2022)"</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data From USDA 2025</span><span class="sc">\n</span><span class="st">Data visualization by Lo-Yu Chang"</span>) <span class="sc">+</span> </span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -2118,10 +2101,11 @@ dbl (2): FIPS_Code, Value
 </div>
 </div>
 </div>
+<p>There is a positive correlation between the percentage of adults with a bachelor’s degree or higher and the median household income in Maryland counties, indicating that counties with higher education levels tend to have higher median household incomes. The counties with the highest education levels, such as Montgomery and Howard counties, also have some of the highest median household incomes. On the other hand, counties with lower education levels, such as Somerset and Dorchester counties, tend to have lower median household incomes.</p>
 <p>For more quantitative analysis, we can fit a linear model to see the correlation coefficient between education level and median household income.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Median_Income <span class="sc">~</span> Percent_bachelor, <span class="at">data =</span> MD.income.edu)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Median_Income <span class="sc">~</span> Percent_bachelor, <span class="at">data =</span> MD.income.edu)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -2143,10 +2127,13 @@ Multiple R-squared:  0.5815,    Adjusted R-squared:  0.5633
 F-statistic: 31.95 on 1 and 23 DF,  p-value: 9.378e-06</code></pre>
 </div>
 </div>
-</section>
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>Over the last 40 years, Maryland counties have seen a significant increase in education levels, with more adults attaining higher education degrees. The unemployment rates in Maryland counties have fluctuated over the years, with some counties experiencing higher rates than others, particularly during economic downturns such as the 2008 Great Recession and the COVID-19 pandemic. As for the primary focus of this analysis, we can see from the scatter plot and the linear regression line that there is a positive correlation between the percentage of adults with a bachelor’s degree or higher and the median household income in Maryland counties. The linear model summary shows that for every 1% increase in the percentage of adults with a bachelor’s degree or higher, the median household income increases by approximately $1,613. This suggests that higher education levels are associated with higher income levels in Maryland counties. However, this is a correlational relationship and does not imply causation. Other factors may also contribute to income levels, and further analysis would be needed to establish causality, also the direction of causality cannot be determined from this analysis alone, ie. whether higher education leads to higher income or vice versa.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>This is an oversimplified linear regression model, and there are many other factors that can influence median household income, such as occupation, industry, experience, and location. Therefore, this model should be interpreted with caution and not be used to make definitive conclusions about the relationship between education level and income.</p>
+</div></div></section>
+<section id="result-summary" class="level2">
+<h2 class="anchored" data-anchor-id="result-summary">Result Summary</h2>
+<p>Over the last 40 years (1970-2019), Maryland counties have seen a significant increase in education levels, with more adults attaining higher education degrees. The unemployment rates in Maryland counties have fluctuated over the years, with some counties experiencing higher rates than others, particularly during economic downturns such as the 2008 Great Recession and the COVID-19 pandemic. As for the primary focus of this analysis, we can see from the scatter plot and the linear regression line that there is a positive correlation between the percentage of adults with a bachelor’s degree or higher and the median household income in Maryland counties. The linear model summary shows that for every 1% increase in the percentage of adults with a bachelor’s degree or higher, the median household income increases by approximately $1,613. This suggests that higher education levels are associated with higher income levels in Maryland counties. However, this is a correlational relationship and does not imply causation. Other factors may also contribute to income levels, and further analysis would be needed to establish causality, also the direction of causality cannot be determined from this analysis alone, ie. whether higher education leads to higher income or vice versa.</p>
 </section>
 <section id="summary-for-used-functions-for-ta-grading" class="level2">
 <h2 class="anchored" data-anchor-id="summary-for-used-functions-for-ta-grading">Summary for used functions for TA grading</h2>
@@ -2180,13 +2167,13 @@ F-statistic: 31.95 on 1 and 23 DF,  p-value: 9.378e-06</code></pre>
 <li><code>scale_x_discrete()</code></li>
 <li><code>geom_line()</code></li>
 </ul>
-<p>In total <strong>9 functions</strong> from <code>ggplot2</code> and specifically <strong>5 geom_ functions</strong> were used for data visualization.</p>
+<p>In total <strong>9 functions</strong> from <code>ggplot2</code> and specifically <strong>5 <code>geom_</code> functions</strong> were used for data visualization.</p>
 </section>
 </section>
 <section id="session-info" class="level2">
 <h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">session_info</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">session_info</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>─ Session info ───────────────────────────────────────────────────────────────
  setting  value
@@ -2198,7 +2185,7 @@ F-statistic: 31.95 on 1 and 23 DF,  p-value: 9.378e-06</code></pre>
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       America/New_York
- date     2025-11-06
+ date     2025-11-07
  pandoc   3.6.3 @ /Applications/Positron.app/Contents/Resources/app/quarto/bin/tools/aarch64/ (via rmarkdown)
  quarto   1.8.25 @ /Applications/quarto/bin/quarto
 

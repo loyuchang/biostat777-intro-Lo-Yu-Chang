@@ -52,7 +52,7 @@ There is no comprehensive data dictionary provided for these datasets, but based
 
 ::: {.callout-caution}
 ## Always double-check the name of the columns when merging datasets!
-For example, in the education dataset, the FIPS code column is named "FIPS Code", while in the unemployment dataset, it is named "FIPS_Code". This difference in naming conventions can lead to errors when merging datasets if not properly addressed. I will proceed to clean up this later in the analysis.
+For example, in the education dataset, the FIPS code column is named `FIPS Code`, while in the unemployment dataset, it is named `FIPS_Code`. Also the `Area name` and `Area_Name`. This difference in naming conventions can lead to errors when merging datasets if not properly addressed. I will proceed to clean up this later in the analysis.
 :::
 
 # Data Analysis
@@ -88,7 +88,9 @@ To maintain proper equitte, I try to not re-download the data files if they alre
 :::
 
 Then read in the datasets:
+
 ```{r}
+#| message: false
 education_data <- read_csv(here("data/Education2023.csv"))
 unemployment_data <- read_csv(here("data/Unemployment2023.csv"))
 MD.edu <- education_data %>%
@@ -105,6 +107,7 @@ head(MD.income)
 ```
 
 ## Step 2. Data Wrangling and Merging Datasets
+
 First we can plot relationship between the percentage of individuals with a bachelor's degree or higher and the median household income in Maryland counties, and focusing on the education data from 2019-2023 and the unemployment data from 2022. I clean up the names, removing the "county" suffix for better readability, also seperate the year from the attribute name, both for education and unemployment data. Also, `Attribute_edu` will be "attribute, year", `Attribute_unemp` will be "attribute_year", and I want to slice off the year part for both to put in separate columns "year_edu" and "year_unemp"
 
 ```{r}
@@ -155,7 +158,7 @@ MD.edu.clean <- MD.edu.clean %>%
   ))
 ```
 
-I can use `piviot_wider()` to reshape the data so that each education level becomes a separate column, making it easier to analyze the distribution of education levels over the years.
+I can use `piviot_wider()` to reshape the data so that each education level becomes a separate column, making it easier to be read by human and use kable to display the data in a nice table format.
 
 ```{r}
 MD.edu.wide <- MD.edu.clean %>% 
@@ -169,6 +172,7 @@ kable(MD.edu.wide, caption = "Maryland Educational Level by County, 1970 - 2019"
 ```
 
 Now we can focus on the income data. We can first look at the unemployment rates in Maryland counties change in years, faceted by county.
+
 ```{r}
 MD.income.clean <- MD.income %>%
   mutate(`Area_name` = str_replace(`Area_Name`, " County, MD", ""),
@@ -182,7 +186,7 @@ MD.employment <- MD.income.clean %>%
   filter(Attribute == "Unemployment_rate")
 ```
 
-The data is already tidy in the long-format, but since I am interested in combining the education information with employment data, I will need to merge them together using the common column "FIPS", which represents the unique identifier for each geological area. Now we can analyze the relationship between education level and median household income in Maryland counties. We will focus on the education data from 2019 and the income data from 2022.
+The data is already tidy in the long-format, but since I am interested in combining the education information with employment data, I will need to merge them together using the common column `Area name`, which represents the unique identifier for each geological area. Now we can analyze the relationship between education level and median household income in Maryland counties. We will focus on the education data from 2019 and the income data from 2022.
 
 ```{r}
 MD.income.edu <- MD.edu.clean %>%
@@ -196,7 +200,7 @@ MD.income.edu <- MD.edu.clean %>%
 
 ::: {.callout-note}
 ## Note on merging datasets
-As mentioned earlier, the Area name columns are different in the two datasets, so I need to specify the column names when merging the datasets using `inner_join()`.
+As mentioned earlier, the `Area name` columns are different in the two datasets, so I need to specify the column names when merging the datasets using `inner_join()`.
 :::
 
 ## Step 3. Data Analysis and Visualization
@@ -214,6 +218,7 @@ ggplot(MD.edu.clean, aes(x = Year, y = Value, fill = Attribute)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ `Area name`) +
   labs(title = "Education Level Distribution in Maryland Counties (1990-2023)",
+subtitle = 'Faceted by County',
        x = "Year",
        y = "Percentage of Adults",
        fill = "Education Level",
@@ -231,6 +236,7 @@ ggplot(MD.employment, aes(x = Year, y = Value, group = 1)) +
   facet_wrap(~ `Area_name`) + # I want to change year interval to be every 5 years
   scale_x_discrete(breaks = seq(1990, 2022, by = 5)) +
   labs(title = "Unemployment Rate in Maryland Counties (1990-2022)",
+subtitle = "Faceted by County",
        x = "Year",
        y = "Unemployment Rate (%)",
        caption = "Data From USDA 2025\nData visualization by Lo-Yu Chang") +
@@ -247,11 +253,14 @@ ggplot(MD.income.edu, aes(x = Percent_bachelor, y = Median_Income)) +
   geom_text(aes(label = `Area name`), vjust = -0.5, hjust = 0.5, size = 3) +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
   labs(title = "Relationship between Education Level and Median Household Income in Maryland Counties",
+  subtitle = "2019 Education Data and 2022 Income Data",
        x = "Percentage of Adults with Bachelor's Degree or Higher (2019)",
        y = "Median Household Income (2022)",
        caption = "Data From USDA 2025\nData visualization by Lo-Yu Chang") + 
   theme_minimal()
 ```
+
+There is a positive correlation between the percentage of adults with a bachelor's degree or higher and the median household income in Maryland counties, indicating that counties with higher education levels tend to have higher median household incomes. The counties with the highest education levels, such as Montgomery and Howard counties, also have some of the highest median household incomes. On the other hand, counties with lower education levels, such as Somerset and Dorchester counties, tend to have lower median household incomes.
 
 For more quantitative analysis, we can fit a linear model to see the correlation coefficient between education level and median household income.
 
@@ -260,9 +269,13 @@ model <- lm(Median_Income ~ Percent_bachelor, data = MD.income.edu)
 summary(model)
 ```
 
-## Summary
+::: {.column-margin}
+This is an oversimplified linear regression model, and there are many other factors that can influence median household income, such as occupation, industry, experience, and location. Therefore, this model should be interpreted with caution and not be used to make definitive conclusions about the relationship between education level and income.
+:::
 
-Over the last 40 years, Maryland counties have seen a significant increase in education levels, with more adults attaining higher education degrees. The unemployment rates in Maryland counties have fluctuated over the years, with some counties experiencing higher rates than others, particularly during economic downturns such as the 2008 Great Recession and the COVID-19 pandemic. As for the primary focus of this analysis, we can see from the scatter plot and the linear regression line that there is a positive correlation between the percentage of adults with a bachelor's degree or higher and the median household income in Maryland counties. The linear model summary shows that for every 1% increase in the percentage of adults with a bachelor's degree or higher, the median household income increases by approximately $1,613. This suggests that higher education levels are associated with higher income levels in Maryland counties. However, this is a correlational relationship and does not imply causation. Other factors may also contribute to income levels, and further analysis would be needed to establish causality, also the direction of causality cannot be determined from this analysis alone, ie. whether higher education leads to higher income or vice versa.
+## Result Summary
+
+Over the last 40 years (1970-2019), Maryland counties have seen a significant increase in education levels, with more adults attaining higher education degrees. The unemployment rates in Maryland counties have fluctuated over the years, with some counties experiencing higher rates than others, particularly during economic downturns such as the 2008 Great Recession and the COVID-19 pandemic. As for the primary focus of this analysis, we can see from the scatter plot and the linear regression line that there is a positive correlation between the percentage of adults with a bachelor's degree or higher and the median household income in Maryland counties. The linear model summary shows that for every 1% increase in the percentage of adults with a bachelor's degree or higher, the median household income increases by approximately $1,613. This suggests that higher education levels are associated with higher income levels in Maryland counties. However, this is a correlational relationship and does not imply causation. Other factors may also contribute to income levels, and further analysis would be needed to establish causality, also the direction of causality cannot be determined from this analysis alone, ie. whether higher education leads to higher income or vice versa.
 
 ## Summary for used functions for TA grading
 
@@ -289,7 +302,7 @@ In total **6 functions** from `dplyr` and `tidyr` were used for data manipulatio
 - `scale_x_discrete()`
 - `geom_line()`
 
-In total **9 functions** from `ggplot2` and specifically **5 geom_ functions** were used for data visualization.
+In total **9 functions** from `ggplot2` and specifically **5 `geom_` functions** were used for data visualization.
 
 ## Session Info
 ```{r}
