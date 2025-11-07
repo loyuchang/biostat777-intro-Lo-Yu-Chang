@@ -55,10 +55,12 @@ There is no comprehensive data dictionary provided for these datasets, but based
 For example, in the education dataset, the FIPS code column is named "FIPS Code", while in the unemployment dataset, it is named "FIPS_Code". This difference in naming conventions can lead to errors when merging datasets if not properly addressed. I will proceed to clean up this later in the analysis.
 :::
 
-## Data Analysis
+# Data Analysis
 
-### Step 1. Load required packages and read in the datasets
+## Step 1. Load required packages and read in the datasets
+
 First load the required packages:
+
 ```{r}
 #| message: false
 library(tidyverse)
